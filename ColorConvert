@@ -1,0 +1,337 @@
+var color1 = color(255,255,255);
+var col1R = 255;
+var col1G = 255;
+var col1B = 255;
+var colorTemp = color(0,0,0);
+var colTempR = 0;
+var colTempG = 0;
+var colTempB = 0;
+var color2 = color(0,0,0);
+var col2R = 0;
+var col2G = 0;
+var col2B = 0;
+var sel = "color1";
+var y = 0;
+var x = 0;
+var colorSeg = "";
+var swapPress = false;
+var colorSel = function(seg) {
+    if(seg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(seg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(seg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(seg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    fill(150,150,150);
+    rect(x*200,y*200,200,200);
+    if(swapPress === true){
+        stroke(200,200,200);
+    }
+    else{
+        stroke(100,100,100);
+    }
+    rect(x*200+70,y*200+10,110,40);
+    fill(100,100,100);
+    textSize(20);
+    text("Swap",x*200+100,y*200+35);
+    fill(color1);
+    strokeWeight(3);
+    if(sel === "color1"){
+        stroke(200,200,200);
+    }
+    else{
+        stroke(100,100,100);
+    }
+    rect(x*200+10,y*200+10,20,20);
+    fill(color2);
+    if(sel === "color2"){
+        stroke(200,200,200);
+    }
+    else{
+        stroke(100,100,100);
+    }
+    rect(x*200+40,y*200+10,20,20);
+    stroke(100,100,100);
+    noFill();
+    line(x*200+20,x*200+80,x*200+180,x*200+80);
+    line(x*200+20,x*200+120,x*200+180,x*200+120);
+    line(x*200+20,x*200+160,x*200+180,x*200+160);
+    rect(x*200,y*200,200,200);
+    fill(125,125,125);
+    if(sel === "color1"){
+        ellipse(x*200+20+col1R/255*160,y*200+80,20,20);
+        ellipse(x*200+20+col1G/255*160,y*200+120,20,20);
+        ellipse(x*200+20+col1B/255*160,y*200+160,20,20);
+    }
+    else if(sel === "color2"){
+        ellipse(x*200+20+col2R/255*160,y*200+80,20,20);
+        ellipse(x*200+20+col2G/255*160,y*200+120,20,20);
+        ellipse(x*200+20+col2B/255*160,y*200+160,20,20);
+    }
+    colorSeg = seg;
+};
+var lineSol = function(seg) {
+    fill(color1);
+    noStroke();
+    if(seg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(seg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(seg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(seg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    rect(x*200,y*200,200,200);
+    fill(color2);
+    rect(x*200,y*200+75,200,50);
+    stroke(100,100,100);
+    noFill();
+    rect(x*200,y*200,200,200);
+};
+var chk = function(seg) {
+    fill(color1);
+    noStroke();
+    if(seg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(seg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(seg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(seg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    rect(x*200,y*200,200,200);
+    noStroke();
+    fill(color2);
+    rect(x*200+50,y*200,50,50);
+    rect(x*200+150,y*200,50,50);
+    rect(x*200,y*200+50,50,50);
+    rect(x*200+100,y*200+50,50,50);
+    rect(x*200+50,y*200+100,50,50);
+    rect(x*200+150,y*200+100,50,50);
+    rect(x*200,y*200+150,50,50);
+    rect(x*200+100,y*200+150,50,50);
+    stroke(100,100,100);
+    noFill();
+    rect(x*200,y*200,200,200);
+};
+var halfCol = function(seg) {
+    fill(color1);
+    noStroke();
+    if(seg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(seg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(seg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(seg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    rect(x*200,y*200,200,200);
+    fill(color2);
+    rect(x*200,y*200+100,200,100);
+    stroke(100,100,100);
+    noFill();
+    rect(x*200,y*200,200,200);
+};
+var mouseClicked = function() {
+    if(colorSeg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(colorSeg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(colorSeg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(colorSeg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    if(mouseX >= x*200+10&&mouseX <= x*200+30&&mouseY >= y*200+10&&mouseY <= y*200+30){
+        sel = "color1";
+    }
+    else if(mouseX >= x*200+40&&mouseX <= x*200+60&&mouseY >= y*200+10&&mouseY <= y*200+30){
+        sel = "color2";
+    }
+    if(mouseX >= x*200+70&&mouseX <= x*200+180&&mouseY >= y*200+10&&mouseY <= y*200+50){
+        colorTemp = color1;
+        color1 = color2;
+        color2 = colorTemp;
+        colTempR = col1R;
+        col1R = col2R;
+        col2R = colTempR;
+        colTempG = col1G;
+        col1G = col2G;
+        col2G = colTempG;
+        colTempB = col1B;
+        col1B = col2B;
+        col2B = colTempB;
+    }
+};
+var mouseReleased = function() {
+    if(colorSeg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(colorSeg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(colorSeg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(colorSeg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    if(mouseX >= x*200+70&&mouseX <= x*200+180&&mouseY >= y*200+10&&mouseY <= y*200+50){
+        swapPress = false;
+    }
+};
+var mousePressed = function() {
+    if(colorSeg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(colorSeg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(colorSeg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(colorSeg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    if(sel === "color1"){
+        if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+70&&mouseY <= y*200+90){
+            col1R = (mouseX-20)/160*255-x*200;
+            color1 = color(col1R,col1G,col1B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+110&&mouseY <= y*200+130){
+            col1G = (mouseX-20)/160*255-x*200;
+            color1 = color(col1R,col1G,col1B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+150&&mouseY <= y*200+170){
+            col1B = (mouseX-20)/160*255-x*200;
+            color1 = color(col1R,col1G,col1B);
+        }
+    }
+    else if(sel === "color2"){
+        if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+70&&mouseY <= y*200+90){
+            col2R = (mouseX-20)/160*255-x*200;
+            color2 = color(col2R,col2G,col2B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+110&&mouseY <= y*200+130){
+            col2G = (mouseX-20)/160*255-x*200;
+            color2 = color(col2R,col2G,col2B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+150&&mouseY <= y*200+170){
+            col2B = (mouseX-20)/160*255-x*200;
+            color2 = color(col2R,col2G,col2B);
+        }
+    }
+    if(mouseX >= x*200+70&&mouseX <= x*200+180&&mouseY >= y*200+10&&mouseY <= y*200+50){
+        swapPress = true;
+    }
+};
+var mouseDragged = function() {
+    if(colorSeg === "topLeft"){
+        x = 0;
+        y = 0;
+    }
+    else if(colorSeg === "topRight"){
+        x = 1;
+        y = 0;
+    }
+    else if(colorSeg === "bottomLeft"){
+        x = 0;
+        y = 1;
+    }
+    else if(colorSeg === "bottomRight"){
+        x = 1;
+        y = 1;
+    }
+    if(sel === "color1"){
+        if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+70&&mouseY <= y*200+90){
+            col1R = (mouseX-20)/160*255-x*200;
+            color1 = color(col1R,col1G,col1B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+110&&mouseY <= y*200+130){
+            col1G = (mouseX-20)/160*255-x*200;
+            color1 = color(col1R,col1G,col1B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+150&&mouseY <= y*200+170){
+            col1B = (mouseX-20)/160*255-x*200;
+            color1 = color(col1R,col1G,col1B);
+        }
+    }
+    else if(sel === "color2"){
+        if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+70&&mouseY <= y*200+90){
+            col2R = (mouseX-20)/160*255-x*200;
+            color2 = color(col2R,col2G,col2B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+110&&mouseY <= y*200+130){
+            col2G = (mouseX-20)/160*255-x*200;
+            color2 = color(col2R,col2G,col2B);
+        }
+        else if(mouseX >= x*200+20&&mouseX <= x*200+180&&mouseY >= y*200+150&&mouseY <= y*200+170){
+            col2B = (mouseX-20)/160*255-x*200;
+            color2 = color(col2R,col2G,col2B);
+        }
+    }
+};
+var draw = function() {
+    noStroke();
+    fill(50,50,50);
+    rect(0,0,400,400);
+    strokeWeight(2);
+    for(var i = 1; i < 40; i++){
+        stroke(0,0,0);
+        line(i*20,0,0,i*20);
+    }
+    strokeWeight(4);
+    chk("bottomRight");
+    halfCol("bottomLeft");
+    lineSol("topRight");
+    colorSel("topLeft");
+};
