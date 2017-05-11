@@ -1,0 +1,198 @@
+var isInList = function(list, item){
+    var found = false;
+    for(var i in list){
+        if(list[i] === item){
+            found = true;
+        }
+    }
+    return found;
+};
+var calcCells = function(cellsLast2, cell){
+    var adj = 0;
+    if(cellsLast2[cell - 28] === "a"&&cell%27 !== 26){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - 27] === "a"){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - 26] === "a"&&cell%27 !== 0){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - 1] === "a"&&cell%27 !== 26){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - (-1)] === "a"&&cell%27 !== 0){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - (-26)] === "a"&&cell%27 !== 26){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - (-27)] === "a"){
+        adj++;
+    }
+    
+    if(cellsLast2[cell - (-28)] === "a"&&cell%27 !== 0){
+        adj++;
+    }
+    return adj;
+};
+var calcCellsAge = function(cellsLast2, cell){
+    var ageTop = 0;
+    if(cellsLast2[cell - 28] > ageTop&&cell%27 !== 26){
+        ageTop = cellsLast2[cell - 28];
+    }
+    
+    if(cellsLast2[cell - 27] > ageTop){
+        ageTop = cellsLast2[cell - 27];
+    }
+    
+    if(cellsLast2[cell - 26] > ageTop&&cell%27 !== 0){
+        ageTop = cellsLast2[cell - 26];
+    }
+    
+    if(cellsLast2[cell - 1] > ageTop&&cell%27 !== 26){
+        ageTop = cellsLast2[cell - 1];
+    }
+    
+    if(cellsLast2[cell - (-1)] > ageTop&&cell%27 !== 0){
+        ageTop = cellsLast2[cell - (-1)];
+    }
+    
+    if(cellsLast2[cell - (-26)] > ageTop&&cell%27 !== 26){
+        ageTop = cellsLast2[cell - (-26)];
+    }
+    
+    if(cellsLast2[cell - (-27)] > ageTop){
+        ageTop = cellsLast2[cell - (-27)];
+    }
+    
+    if(cellsLast2[cell - (-28)] > ageTop&&cell%27 !== 0){
+        ageTop = cellsLast2[cell - (-28)];
+    }
+    return ageTop;
+};
+frameRate(60);
+var cells = [];
+var cellsLast = [];
+var cellsAge = [];
+var cellsAgeLast = [];
+var cellsCenter = [];
+cellsCenter[0] = 308;
+cellsCenter[1] = 309;
+cellsCenter[2] = 310;
+cellsCenter[3] = 335;
+cellsCenter[4] = 336;
+cellsCenter[5] = 337;
+cellsCenter[6] = 362;
+cellsCenter[7] = 363;
+cellsCenter[8] = 364;
+for(var i = 0; i<675; i++){
+    cells[i] = "d";
+    cellsAge[i] = 0;
+}
+var frame = 0;
+var complete = false;
+var wonAge = 0;
+var wonCells = 0;
+var paused = true;
+var mouseClicked = function() {
+    if(mouseButton === LEFT){
+        cells[floor(mouseX / 16) + 1 + floor(mouseY / 16) * 27] = "a";
+    }
+    if(mouseButton === RIGHT){
+        cells[floor(mouseX / 16) + 1 + floor(mouseY / 16) * 27] = "d";
+        cellsAge[floor(mouseX / 16) + 1 + floor(mouseY / 16) * 27] = 0;
+    }
+};
+var keyTyped = function() {
+    if(key.toString() === " "){
+        if(paused === true){
+            paused = false;
+        }
+        else{
+            paused = true;
+        }
+    }
+};
+var draw = function() {
+    if(frame === 30){
+        noStroke();
+        if(paused === false){
+            fill(255,255,255);
+        }
+        else{
+            fill(255,255,225);
+        }
+        rect(0, 0, 400, 400);
+        for(var cell in cells){
+            cellsLast[cell] = cells[cell];
+            cellsAgeLast[cell] = cellsAge[cell];
+        }
+        
+        for(var cell in cellsLast){
+            var adj2 = calcCells(cellsLast, cell);
+            var ageTop2 = calcCellsAge(cellsAgeLast, cell);
+            if(paused === false){
+                if(cellsLast[cell] === "a"){
+                    fill(cellsAgeLast[cell]/50*255, 255-cellsAgeLast[cell]/50*255+127, 0);
+                    rect(400/25*((cell-1)%27), 400/25*floor(cell/27), 400/25, 400/25);
+                    cellsAge[cell] += 1;
+                    if(adj2 > 3||cellsAge[cell] === 101||adj2 < 2){
+                        cells[cell] = "d";
+                        cellsAge[cell] = 0;
+                    }
+                }
+                if(cellsLast[cell] === "d"&&adj2 === 3&&ageTop2 !== 100){
+                    if(isInList(cellsCenter, cell-1)){
+                        complete = true;
+                        wonCells += 1;
+                        wonAge = calcCellsAge(cellsAgeLast, cell)+1;
+                    }
+                    else{
+                        cells[cell] = "a";
+                        cellsAge[cell] = ageTop2 + 1;
+                    }
+                }
+            }
+            else{
+                if(cells[cell] === "a"){
+                    fill(cellsAgeLast[cell]/50*255, 255-cellsAgeLast[cell]/50*255+127, 0);
+                    rect(400/25*((cell-1)%27), 400/25*floor(cell/27), 400/25, 400/25);
+                }
+            }
+        }
+        fill(200,150,100);
+        for(var cell in cellsCenter){
+            rect(400/25*(cellsCenter[cell]%27), 400/25*floor(cellsCenter[cell]/27), 400/25, 400/25);
+        }
+        
+        if(complete === true){
+            println("Age: " + str(wonAge));
+            println("Cells: " + str(wonCells));
+            println("Mana: " + str(wonCells * wonAge * 60) + "/50000");
+            for(var i in cells){
+                cells[i] = "d";
+                cellsAge[i] = 0;
+            }
+            wonCells = 0;
+            complete = false;
+        }
+        frame = 0;
+    }
+    else{
+        frame+=1;
+    }
+    noFill();
+    stroke(0,0,0);
+    rect(0, 0, 399, 399);
+    for(var i=0; i<24; i++){
+        line((i+1)*400/25, 0, (i+1)*400/25, 400);
+        line(0, (i+1)*400/25, 400, (i+1)*400/25);
+    }
+};
