@@ -1,0 +1,71 @@
+var convert = function(str){
+    if(str === "A"){
+        return 10;
+    }
+    else if(str === "B"){
+        return 11;
+    }
+    else if(str === "C"){
+        return 12;
+    }
+    else if(str === "D"){
+        return 13;
+    }
+    else if(str === "E"){
+        return 14;
+    }
+    else if(str === "F"){
+        return 15;
+    }
+    else{
+        return +str;
+    }
+};
+
+var draw = function(){
+    var r = 0;
+    var g = 0;
+    var b = 0;
+    var color = "c081ff"; //Input here
+    color = color.toUpperCase();
+    
+    for(var i = 0; i < 3 ; i++){
+        var val = color.charAt(i*2);
+        var val2 = color.charAt(i*2+1);
+        if(i === 0){
+            var temp1;
+            var temp2;
+            temp1 = convert(val);
+            temp2 = convert(val2);
+            r = temp1*16+temp2;
+        }
+        else if(i === 1){
+            var temp1;
+            var temp2;
+            temp1 = convert(val);
+            temp2 = convert(val2);
+            g = temp1*16+temp2;
+        }
+        else if(i === 2){
+            var temp1;
+            var temp2;
+            temp1 = convert(val);
+            temp2 = convert(val2);
+            b = temp1*16+temp2;
+        }
+    }
+    
+    fill(r, g, b);
+    noStroke();
+    rect(0,0,400,400);
+    if(r<150&&g<150&&b<150){
+        fill(255, 255, 255);
+    }
+    else{
+        fill(0, 0, 0);
+    }
+    text("Hexadecimal = 0x"+color, 10, 20);
+    text("Red = "+r, 10, 40);
+    text("Green = "+g, 10, 50);
+    text("Blue = "+b, 10, 60);
+};
